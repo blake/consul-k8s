@@ -10,7 +10,7 @@ GOTOOLS = \
 	golang.org/x/tools/cmd/cover \
 	golang.org/x/tools/cmd/stringer
 
-DEV_IMAGE?=consul-k8s-dev
+DEV_IMAGE?=consul-k8s
 GO_BUILD_TAG?=consul-k8s-build-go
 GIT_COMMIT?=$(shell git rev-parse --short HEAD)
 GIT_DIRTY?=$(shell test -n "`git status --porcelain`" && echo "+CHANGES" || true)
@@ -77,7 +77,7 @@ dev:
 	@$(SHELL) $(CURDIR)/build-support/scripts/build-local.sh -o $(GOOS) -a $(GOARCH)
 
 dev-docker:
-	@docker buildx build -t '$(DEV_IMAGE)' --platform linux/amd64,linux/arm/v7 --build-arg 'GIT_COMMIT=$(GIT_COMMIT)' --build-arg 'GIT_DIRTY=$(GIT_DIRTY)' --build-arg 'GIT_DESCRIBE=$(GIT_DESCRIBE)' -f $(CURDIR)/build-support/docker/Dev.dockerfile $(CURDIR)
+	@docker buildx build -t 'blakec/$(DEV_IMAGE):0.9.1' --platform linux/amd64,linux/arm/v7 --build-arg 'GIT_COMMIT=$(GIT_COMMIT)' --build-arg 'GIT_DIRTY=$(GIT_DIRTY)' --build-arg 'GIT_DESCRIBE=$(GIT_DESCRIBE)' -f $(CURDIR)/build-support/docker/Dev.dockerfile $(CURDIR) --push
 
 dev-tree:
 	@$(SHELL) $(CURDIR)/build-support/scripts/dev.sh $(DEV_PUSH_ARG)
